@@ -32,4 +32,24 @@ class PrimeMultiplication
     end
     list
   end
+
+  def create_multipli_table_rows(primes)
+    rows = []
+    for x in primes do
+      temp_arry = [x]
+      for y in primes do
+        temp_arry.push(x*y)
+      end
+      rows.push(temp_arry)
+    end
+    rows
+  end
+
+  def create_primes_table
+    primes = list_of_primes
+    rows = create_multipli_table_rows(primes)
+    primes.unshift('Primes')
+    t = Terminal::Table.new rows: rows, headings: primes
+  end
+
 end

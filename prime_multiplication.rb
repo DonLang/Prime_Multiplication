@@ -1,3 +1,5 @@
+require 'terminal-table'
+
 class PrimeMultiplication
   attr_reader :size
 
@@ -5,51 +7,50 @@ class PrimeMultiplication
     @size = size
   end
 
-  def is_prime?(potential_prime, list)
-    if potential_prime == 2
-      return true
-    elsif potential_prime % 2 == 0
-      return false
-    end
-    #  sieve of e
-    root = Math.sqrt(potential_prime).to_i
-    counter = 0
-    while list[counter] <= root
-      if potential_prime % list[counter] == 0
-        return false
-      end
-      counter += 1
-    end
-    return true
+  def create_primes_table
+    primes = calculate_primes
+    rows = get_table_rows(primes)
+    primes.unshift('')
+    Terminal::Table.new rows: rows, headings: primes, title: 'Prime Multiplication'
   end
 
-  def list_of_primes
-    list = [2]
+  def calculate_primes
+    primes = [2]
     counter = 3
-    while list.length < size
-      is_prime?(counter, list) ? (list << counter ): nil
+    while primes.length < @size
+      is_prime?(counter, primes) ? (primes << counter): nil
       counter += 2
     end
-    list
+    primes
   end
 
-  def create_multipli_table_rows(primes)
+  def is_prime?(num, primes)
+    if num == 2
+      return true
+    elsif num % 2 == 0
+      return false
+    end
+
+    # sieve of Eratosthenes
+    square_root = Math.sqrt(num).to_i
+    for prime in primes
+      if prime > square_root
+        return true
+      elsif num % prime == 0
+        return false
+      end
+    end
+  end
+
+  def get_table_rows(primes)
     rows = []
-    for x in primes do
-      temp_arry = [x]
-      for y in primes do
-        temp_arry.push(x*y)
+    primes.each do |column|
+      temp_arry = [column]
+      primes.each do |row|
+        temp_arry.push(column * row)
       end
       rows.push(temp_arry)
     end
     rows
   end
-
-  def create_primes_table
-    primes = list_of_primes
-    rows = create_multipli_table_rows(primes)
-    primes.unshift('Primes')
-    t = Terminal::Table.new rows: rows, headings: primes
-  end
-
 end

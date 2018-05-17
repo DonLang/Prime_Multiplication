@@ -48,7 +48,6 @@ $ ruby runner.rb 5
 ``` 
  with any positive integer in place of the `5` will get you a multiplication table of that size.
 
-####Testing
+#### Testing
 
 For testing run `$ rspec` in the command line.
-

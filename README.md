@@ -18,7 +18,6 @@ This application is currently running and tested on:
 
 And is using the gems
 - [Rspec (3.7.0)](https://rubygems.org/gems/rspec/versions/3.7.0) 
-- [terminal-table (1.8.0)](https://rubygems.org/gems/terminal-table)
 
 
 Getting Started

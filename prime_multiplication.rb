@@ -1,5 +1,3 @@
-require 'terminal-table'
-
 class PrimeMultiplication
   attr_reader :size
 
@@ -10,8 +8,21 @@ class PrimeMultiplication
   def create_primes_table
     primes = calculate_primes
     rows = get_table_rows(primes)
-    primes.unshift('')
-    Terminal::Table.new rows: rows, headings: primes, title: 'Prime Multiplication'
+    # Add a space to the top row
+    rows.unshift(primes.unshift(" ").map{|x| x.to_s})
+    # Figure out the width of each column
+    rows_width= rows.last.collect{|x| x.length}
+    # Flip the columns and rows
+    rows_t = rows.transpose
+    new_rows = []
+    # Adjust spacing of columns
+    rows_t.each_with_index{|x,i| new_rows[i] = x.collect{|r| r.rjust(rows_width[i] +1) + " "}}
+    # Flip the rows and columns back
+    rows = new_rows.transpose
+    # Add separators between columns and new lines between rows
+    table = rows.collect{|l| l.join("|")}.join("|\n")
+    # Underline and make cyan
+    "\e[4m\e[36m#{table}|\e[0m"
   end
 
   def calculate_primes
@@ -45,9 +56,9 @@ class PrimeMultiplication
   def get_table_rows(primes)
     rows = []
     primes.each do |column|
-      temp_arry = [column]
+      temp_arry = [column.to_s]
       primes.each do |row|
-        temp_arry.push(column * row)
+        temp_arry.push((column * row).to_s)
       end
       rows.push(temp_arry)
     end
